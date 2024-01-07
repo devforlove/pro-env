@@ -70,10 +70,11 @@ pipeline {
                         sh("cp /var/jenkins_home/workspace/${env.JOB_NAME}/${SERVICE}/build/libs/*.jar ./deploy/${SERVICE}.jar")
                         sh("cp /var/jenkins_home/workspace/${env.JOB_NAME}/${SERVICE}/codedeploy/appspec.yml ./deploy")
                         sh("cp /var/jenkins_home/workspace/${env.JOB_NAME}/${SERVICE}/codedeploy/deploy.sh ./deploy")
-                        sh """
-                            cd deploy 
-                            zip -r deploy.*
-                        """
+                        zip(
+                            zipFile: "deploy.zip",
+                            dir: "deploy",
+                            glob: "/var/jenkins_home/workspace/${env.JOB_NAME}/deploy/*"
+                        )
                     }
                     catch (error) {
                         print(error)
