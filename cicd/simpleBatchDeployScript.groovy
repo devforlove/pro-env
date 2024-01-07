@@ -150,7 +150,7 @@ pipeline {
         stage("Clean Up") {
             steps {
                 script {
-//                    sh("sudo rm -rf /var/jenkins_home/workspace/${env.JOB_NAME}/*")
+                    sh("sudo rm -rf /var/jenkins_home/workspace/${env.JOB_NAME}/*")
                 }
             }
         }
