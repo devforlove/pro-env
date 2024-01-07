@@ -77,7 +77,7 @@ pipeline {
                     }
                     catch (error) {
                         print(error)
-//                        sh("rm -rf /var/jenkins_home/workspace/${env.JOB_NAME}/*")
+                        sh("rm -rf /var/jenkins_home/workspace/${env.JOB_NAME}/*")
                         currentBuild.result = "FAILURE"
                     }
                 }
@@ -105,7 +105,7 @@ pipeline {
                     }
                     catch (error) {
                         print(error)
-//                        sh("rm -rf /var/jenkins_home/workspace/${env.JOB_NAME}/*")
+                        sh("rm -rf /var/jenkins_home/workspace/${env.JOB_NAME}/*")
                         currentBuild.result = "FAILURE"
                     }
                 }
@@ -133,7 +133,7 @@ pipeline {
                     }
                     catch (error) {
                         print(error)
-//                        sh("sudo rm -rf /var/jenkins_home/workspace/${env.JOB_NAME}/*")
+                        sh("rm -rf /var/jenkins_home/workspace/${env.JOB_NAME}/*")
                         currentBuild.result = "FAILURE"
                     }
                 }
@@ -150,7 +150,7 @@ pipeline {
         stage("Clean Up") {
             steps {
                 script {
-                    sh("sudo rm -rf /var/jenkins_home/workspace/${env.JOB_NAME}/*")
+                    sh("rm -rf /var/jenkins_home/workspace/${env.JOB_NAME}/*")
                 }
             }
         }
