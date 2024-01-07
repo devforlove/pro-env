@@ -78,7 +78,7 @@ pipeline {
                     }
                     catch (error) {
                         print(error)
-                        sh("rm -rf /var/lib/jenkins/workspace/${env.JOB_NAME}/*")
+                        sh("rm -rf /var/jenkins_home/workspace/${env.JOB_NAME}/*")
                         currentBuild.result = "FAILURE"
                     }
                 }
@@ -106,7 +106,7 @@ pipeline {
                     }
                     catch (error) {
                         print(error)
-                        sh("rm -rf /var/lib/jenkins/workspace/${env.JOB_NAME}/*")
+                        sh("rm -rf /var/jenkins_home/workspace/${env.JOB_NAME}/*")
                         currentBuild.result = "FAILURE"
                     }
                 }
