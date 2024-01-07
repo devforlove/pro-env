@@ -69,8 +69,9 @@ pipeline {
 
                         sh("cd deploy")
                         sh("cp /var/jenkins_home/workspace/${env.JOB_NAME}/${SERVICE}/build/libs/*.jar ./deploy/${SERVICE}.jar")
-                        sh("cp /var/jenkins_home/workspace/${env.JOB_NAME}/${SERVICE}/codedeploy/apspec.yml code-deploy-member-batch")
-                        sh("cp /var/jenkins_home/workspace/${env.JOB_NAME}/${SERVICE}/codedeploy/deploy.sh code-deploy-member-batch")
+                        sh("cp /var/jenkins_home/workspace/${env.JOB_NAME}/${SERVICE}/codedeploy/apspec.yml ./deploy")
+                        sh("cp /var/jenkins_home/workspace/${env.JOB_NAME}/${SERVICE}/codedeploy/deploy.sh ./deploy")
+                        sh("zip -r deploy *")
                     }
                     catch (error) {
                         print(error)
@@ -88,29 +89,26 @@ pipeline {
                 }
             }
         }
-//        stage("Upload To S3") {
-//            steps {
-//                script {
-//                    try {
-//
-//
-//
-//                        withAWS(credentials: "aws-key") {
-//                            s3Upload(
-//                                    path: "${env.JOB_NAME}/${env.BUILD_NUMBER}/${env.JOB_NAME}.zip",
-//                                    file: "/var/jenkins_home/workspace/${env.JOB_NAME}/deploy/deploy.zip",
-//                                    bucket: "batch-repo"
-//                            )
-//                        }
-//                    }
-//                    catch (error) {
-//                        print(error)
-//                        sh("sudo rm -rf /var/lib/jenkins/workspace/${env.JOB_NAME}/*")
-//                        currentBuild.result = "FAILURE"
-//                    }
-//                }
-//            }
-//        }
+        stage("Upload To S3") {
+            steps {
+                script {
+                    try {
+                        withAWS(credentials: "aws-key") {
+                            s3Upload(
+                                    path: "${env.JOB_NAME}/${env.BUILD_NUMBER}/${env.JOB_NAME}.zip",
+                                    file: "/var/jenkins_home/workspace/${env.JOB_NAME}/deploy/deploy.zip",
+                                    bucket: "batch-repo"
+                            )
+                        }
+                    }
+                    catch (error) {
+                        print(error)
+                        sh("sudo rm -rf /var/lib/jenkins/workspace/${env.JOB_NAME}/*")
+                        currentBuild.result = "FAILURE"
+                    }
+                }
+            }
+        }
 //        stage("Deploy") {
 //            steps {
 //                script {
