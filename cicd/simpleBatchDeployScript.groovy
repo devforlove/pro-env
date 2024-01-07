@@ -116,7 +116,7 @@ pipeline {
             steps {
                 script {
                     try {
-                        withAWS(credentials: "aws-key") {
+                        withAWS(credentials: "AWS_CREDENTIAL") {
                             createDeployment(
                                     s3Bucket: 'batch-repo',
                                     s3Key: "${env.JOB_NAME}/${env.BUILD_NUMBER}/${env.JOB_NAME}.zip",
