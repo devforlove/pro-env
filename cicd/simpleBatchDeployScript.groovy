@@ -58,85 +58,41 @@ pipeline {
                 }
             }
         }
-//        stage("Building Jar") {
-//            steps {
-//                script {
-//                    try {
-//                        sh("rm -rf deploy")
-//                        sh("mkdir deploy")
-//
-//                        sh("gradle :${SERVICE}:clean :${SERVICE}:build -x test")
-//
-//                        sh("cd deploy")
-//                        sh("cp /var/jenkins_home/workspace/${env.JOB_NAME}/${SERVICE}/build/libs/*.jar ./deploy/${SERVICE}.jar")
-//                    }
-//                    catch (error) {
-//                        print(error)
-//                        sh("sudo rm -rf /var/lib/jenkins/workspace/${env.JOB_NAME}/*")
-//                        currentBuild.result = "FAILURE"
-//                    }
-//                }
-//            }
-//            post {
-//                failure {
-//                    echo "Build jar stage failed"
-//                }
-//                success {
-//                    echo "Build jar stage success"
-//                }
-//            }
-//        }
+        stage("Building Jar") {
+            steps {
+                script {
+                    try {
+                        sh("rm -rf deploy")
+                        sh("mkdir deploy")
+
+                        sh("gradle :${SERVICE}:clean :${SERVICE}:build -x test")
+
+                        sh("cd deploy")
+                        sh("cp /var/jenkins_home/workspace/${env.JOB_NAME}/${SERVICE}/build/libs/*.jar ./deploy/${SERVICE}.jar")
+                        sh("cp /var/jenkins_home/workspace/${env.JOB_NAME}/${SERVICE}/codedeploy/apspec.yml code-deploy-member-batch")
+                        sh("cp /var/jenkins_home/workspace/${env.JOB_NAME}/${SERVICE}/codedeploy/deploy.sh code-deploy-member-batch")
+                    }
+                    catch (error) {
+                        print(error)
+                        sh("sudo rm -rf /var/lib/jenkins/workspace/${env.JOB_NAME}/*")
+                        currentBuild.result = "FAILURE"
+                    }
+                }
+            }
+            post {
+                failure {
+                    echo "Build jar stage failed"
+                }
+                success {
+                    echo "Build jar stage success"
+                }
+            }
+        }
 //        stage("Upload To S3") {
 //            steps {
 //                script {
 //                    try {
-//                        def script = """
-//                        #!/bin/bash
-//                        ORIGIN_JAR_PATH='/home/ubuntu/jenkins/batch/deploy/*.jar'
-//                        ORIGIN_JAR_NAME=\$(basename \${ORIGIN_JAR_PATH})
-//                        TARGET_PATH='/home/ubuntu/jenkins/batch/application.jar'
-//                        JAR_BOX_PATH='/home/ubuntu/jenkins/batch/jar/'
 //
-//                        echo "  > 배포 JAR: "\${ORIGIN_JAR_NAME}
-//
-//                        echo "  > chmod 777 \${ORIGIN_JAR_PATH}"
-//                        sudo chmod 777 \${ORIGIN_JAR_PATH}
-//                        sudo chmod a+x \${ORIGIN_JAR_PATH}
-//
-//                        echo "  > cp \${ORIGIN_JAR_PATH} \${JAR_BOX_PATH}"
-//                        sudo cp \${ORIGIN_JAR_PATH} \${JAR_BOX_PATH}
-//
-//                        echo "  > sudo ln -s -f ./jar/\${ORIGIN_JAR_NAME} application.jar"
-//                        sudo ln -s -f ./jar/\${ORIGIN_JAR_NAME} application.jar
-//                        """.stripIndent()
-//                        writeFile(file: 'deploy/deploy.sh', text: script)
-//
-//                        sh """
-//                                cd deploy
-//                                cat>appspec.yml<<-EOF
-//                                version: 0.0
-//                                os: linux
-//                                files:
-//                                  - source:  /
-//                                    destination: /home/ubuntu/jenkins/batch/deploy
-//
-//                                permissions:
-//                                  - object: /
-//                                    pattern: "**"
-//                                    owner: root
-//                                    group: root
-//
-//                                hooks:
-//                                  ApplicationStart:
-//                                    - location: deploy.sh
-//                                      timeout: 60
-//                                      runas: root
-//                                """.stripIndent()
-//
-//                        sh """
-//                                cd deploy
-//                                zip -r deploy *
-//                                """
 //
 //
 //                        withAWS(credentials: "aws-key") {
