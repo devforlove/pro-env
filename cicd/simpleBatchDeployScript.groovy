@@ -69,7 +69,7 @@ pipeline {
 
                         sh("cd deploy")
                         sh("cp /var/jenkins_home/workspace/${env.JOB_NAME}/${SERVICE}/build/libs/*.jar ./deploy/${SERVICE}.jar")
-                        sh("cp /var/jenkins_home/workspace/${env.JOB_NAME}/${SERVICE}/codedeploy/apspec.yml ./deploy")
+                        sh("cp /var/jenkins_home/workspace/${env.JOB_NAME}/${SERVICE}/codedeploy/appspec.yml ./deploy")
                         sh("cp /var/jenkins_home/workspace/${env.JOB_NAME}/${SERVICE}/codedeploy/deploy.sh ./deploy")
                         sh("zip -r deploy *")
                     }
