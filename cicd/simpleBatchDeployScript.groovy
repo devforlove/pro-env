@@ -7,7 +7,7 @@ pipeline {
         jdk "jdk17"
     }
     environment {
-        GIT_DISTRIBUTE_URL = "https://github.com/devforlove/pro-env.git"
+        GIT_DISTRIBUTE_URL = "https://github.com/devforlove/deploy.git"
     }
     stages {
         stage("Preparing Job") {
