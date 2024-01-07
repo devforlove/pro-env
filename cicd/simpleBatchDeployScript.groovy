@@ -112,46 +112,46 @@ pipeline {
                 }
             }
         }
-//        stage("Deploy") {
-//            steps {
-//                script {
-//                    try {
-//                        withAWS(credentials: "aws-key") {
-//                            createDeployment(
-//                                    s3Bucket: 'batch-repo',
-//                                    s3Key: "${env.JOB_NAME}/${env.BUILD_NUMBER}/${env.JOB_NAME}.zip",
-//                                    s3BundleType: 'zip',
-//                                    applicationName: 'batch-deploy',
-//                                    deploymentGroupName: 'batch-deploy-group',
-//                                    deploymentConfigName: 'CodeDeployDefault.AllAtOnce',
-//                                    description: 'Batch deploy',
-//                                    waitForCompletion: 'true',
-//                                    //Optional values
-//                                    ignoreApplicationStopFailures: 'false',
-//                                    fileExistsBehavior: 'OVERWRITE'// [Valid values: DISALLOW, OVERWRITE, RETAIN]
-//                            )
-//                        }
-//                    }
-//                    catch (error) {
-//                        print(error)
-//                        sh("sudo rm -rf /var/jenkins_home/workspace/${env.JOB_NAME}/*")
-//                        currentBuild.result = "FAILURE"
-//                    }
-//                }
-//            }
-//            post {
-//                failure {
-//                    echo "Deploy stage failed"
-//                }
-//                success {
-//                    echo "Deploy stage success"
-//                }
-//            }
-//        }
-//        stage("Clean Up") {
-//            steps {
-//                echo "clean up"
-//            }
-//        }
+        stage("Deploy") {
+            steps {
+                script {
+                    try {
+                        withAWS(credentials: "aws-key") {
+                            createDeployment(
+                                    s3Bucket: 'batch-repo',
+                                    s3Key: "${env.JOB_NAME}/${env.BUILD_NUMBER}/${env.JOB_NAME}.zip",
+                                    s3BundleType: 'zip',
+                                    applicationName: 'batch-deploy',
+                                    deploymentGroupName: 'batch-deploy-group',
+                                    deploymentConfigName: 'CodeDeployDefault.AllAtOnce',
+                                    description: 'Batch deploy',
+                                    waitForCompletion: 'true',
+                                    //Optional values
+                                    ignoreApplicationStopFailures: 'false',
+                                    fileExistsBehavior: 'OVERWRITE'// [Valid values: DISALLOW, OVERWRITE, RETAIN]
+                            )
+                        }
+                    }
+                    catch (error) {
+                        print(error)
+                        sh("sudo rm -rf /var/jenkins_home/workspace/${env.JOB_NAME}/*")
+                        currentBuild.result = "FAILURE"
+                    }
+                }
+            }
+            post {
+                failure {
+                    echo "Deploy stage failed"
+                }
+                success {
+                    echo "Deploy stage success"
+                }
+            }
+        }
+        stage("Clean Up") {
+            steps {
+                echo "clean up"
+            }
+        }
     }
 }
