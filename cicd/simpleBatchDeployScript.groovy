@@ -99,7 +99,7 @@ pipeline {
                         withAWS(credentials: "aws-key") {
                             s3Upload(
                                     path: "${env.JOB_NAME}/${env.BUILD_NUMBER}/${env.JOB_NAME}.zip",
-                                    file: "/var/jenkins_home/workspace/${env.JOB_NAME}/deploy/deploy.zip",
+                                    file: "/var/jenkins_home/workspace/${env.JOB_NAME}/deploy.zip",
                                     bucket: "batch-repo"
                             )
                         }
